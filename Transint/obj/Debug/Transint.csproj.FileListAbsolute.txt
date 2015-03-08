@@ -1,0 +1,9 @@
+C:\Users\JAVI\Documents\GitHub\Transint\Transint\bin\Debug\Transint.exe.config
+C:\Users\JAVI\Documents\GitHub\Transint\Transint\bin\Debug\Transint.exe
+C:\Users\JAVI\Documents\GitHub\Transint\Transint\bin\Debug\Transint.pdb
+C:\Users\JAVI\Documents\GitHub\Transint\Transint\obj\Debug\Transint.csprojResolveAssemblyReference.cache
+C:\Users\JAVI\Documents\GitHub\Transint\Transint\obj\Debug\Transint.Form1.resources
+C:\Users\JAVI\Documents\GitHub\Transint\Transint\obj\Debug\Transint.Properties.Resources.resources
+C:\Users\JAVI\Documents\GitHub\Transint\Transint\obj\Debug\Transint.csproj.GenerateResource.Cache
+C:\Users\JAVI\Documents\GitHub\Transint\Transint\obj\Debug\Transint.exe
+C:\Users\JAVI\Documents\GitHub\Transint\Transint\obj\Debug\Transint.pdb
