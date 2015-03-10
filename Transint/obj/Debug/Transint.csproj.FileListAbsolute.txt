@@ -7,3 +7,11 @@ C:\Users\JAVI\Documents\GitHub\Transint\Transint\obj\Debug\Transint.Properties.R
 C:\Users\JAVI\Documents\GitHub\Transint\Transint\obj\Debug\Transint.csproj.GenerateResource.Cache
 C:\Users\JAVI\Documents\GitHub\Transint\Transint\obj\Debug\Transint.exe
 C:\Users\JAVI\Documents\GitHub\Transint\Transint\obj\Debug\Transint.pdb
+C:\Users\Javier\Documents\GitHub\SSII-Transint\Transint\bin\Debug\Transint.exe.config
+C:\Users\Javier\Documents\GitHub\SSII-Transint\Transint\bin\Debug\Transint.exe
+C:\Users\Javier\Documents\GitHub\SSII-Transint\Transint\bin\Debug\Transint.pdb
+C:\Users\Javier\Documents\GitHub\SSII-Transint\Transint\obj\Debug\Transint.Form1.resources
+C:\Users\Javier\Documents\GitHub\SSII-Transint\Transint\obj\Debug\Transint.Properties.Resources.resources
+C:\Users\Javier\Documents\GitHub\SSII-Transint\Transint\obj\Debug\Transint.csproj.GenerateResource.Cache
+C:\Users\Javier\Documents\GitHub\SSII-Transint\Transint\obj\Debug\Transint.exe
+C:\Users\Javier\Documents\GitHub\SSII-Transint\Transint\obj\Debug\Transint.pdb

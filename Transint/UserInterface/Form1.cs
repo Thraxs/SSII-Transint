@@ -16,5 +16,10 @@ namespace Transint
         {
             InitializeComponent();
         }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //TODO DESTROY KEYS
+        }
     }
 }

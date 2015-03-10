@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Threading;//TODO REMOVE
+using System.Text;
+
 namespace Transint
 {
     static class Program
@@ -14,18 +17,19 @@ namespace Transint
         [STAThread]
         static void Main()
         {
-            /*
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+            
+            /*
+            byte[] key = Cipher.generateKey(HMACAlgorithm.SHA512);
+            ServerSocket server = new ServerSocket(11000, key, HMACAlgorithm.SHA512);
+            Thread thread = new Thread(server.start);
+            thread.Start();
+            ClientSocket client = new ClientSocket("localhost", 11000, key, HMACAlgorithm.SHA512);
+            client.sendData("client message data");
             */
-
-
-            ServerSocket server = new ServerSocket(6531);
-            server.start();
-            //ClientSocket client = new ClientSocket("127.0.0.1", 6531);
-            //client.sendData("client message data");
-            server.stop();
         }
     }
 }
