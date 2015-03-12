@@ -67,6 +67,7 @@
             this.textBox_generatedKey = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.button_copyKey = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -373,6 +374,7 @@
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel3.Controls.Add(this.button_copyKey);
             this.panel3.Controls.Add(this.comboBox_keyGenerator);
             this.panel3.Controls.Add(this.label5);
             this.panel3.Controls.Add(this.panel4);
@@ -421,7 +423,7 @@
             // 
             // button_deleteKey
             // 
-            this.button_deleteKey.Location = new System.Drawing.Point(288, 128);
+            this.button_deleteKey.Location = new System.Drawing.Point(429, 128);
             this.button_deleteKey.Name = "button_deleteKey";
             this.button_deleteKey.Size = new System.Drawing.Size(231, 23);
             this.button_deleteKey.TabIndex = 8;
@@ -447,6 +449,17 @@
             this.label4.TabIndex = 6;
             this.label4.Text = "Clave generada";
             // 
+            // button_copyKey
+            // 
+            this.button_copyKey.Location = new System.Drawing.Point(192, 128);
+            this.button_copyKey.Name = "button_copyKey";
+            this.button_copyKey.Size = new System.Drawing.Size(231, 23);
+            this.button_copyKey.TabIndex = 12;
+            this.button_copyKey.Text = "Copiar al portapapeles";
+            this.toolTip1.SetToolTip(this.button_copyKey, "Copia la clave generada al portapapeles");
+            this.button_copyKey.UseVisualStyleBackColor = true;
+            this.button_copyKey.Click += new System.EventHandler(this.button_copyKey_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -457,6 +470,8 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "TransInt";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
@@ -511,6 +526,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ListBox listBox_server;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button button_copyKey;
 
     }
 }

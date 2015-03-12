@@ -20,21 +20,28 @@ namespace Transint
 
         public ClientSocket(string ip, int port, byte[] key, HMACAlgorithm algorithm, string input)
         {
-            IPHostEntry ipHostInfo = Dns.GetHostEntry(ip);
-            IPAddress address = null;
-
-            //Find IPv4 address
-            foreach (IPAddress addr in ipHostInfo.AddressList)
+            try
             {
-                if (addr.AddressFamily == AddressFamily.InterNetwork)
+                IPHostEntry ipHostInfo = Dns.GetHostEntry(ip);
+                IPAddress address = null;
+
+                //Find IPv4 address
+                foreach (IPAddress addr in ipHostInfo.AddressList)
                 {
-                    address = addr;
+                    if (addr.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        address = addr;
+                    }
                 }
+
+                remoteServer = new IPEndPoint(address, port);
+
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             }
-
-            remoteServer = new IPEndPoint(address, port);
-
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            catch (Exception e)
+            {
+                Console.WriteLine("Client socket creation exception:" + e);
+            }
 
             data = null;
             buffer = new Byte[1024];
@@ -54,7 +61,7 @@ namespace Transint
 
                 //Create the message with the HMAC and the contents
                 byte[] HMAC = Cipher.computeHMAC(key, input, algorithm);
-                string messageString = Cipher.byteToString(HMAC) + "</>" + input + "</>";
+                string messageString = Cipher.byteToString(HMAC) + "</>" + input + "<//>";
                 byte[] message = Encoding.Default.GetBytes(messageString);
                 
                 socket.Send(message);
@@ -68,6 +75,8 @@ namespace Transint
 
                 socket.Shutdown(SocketShutdown.Both);
                 socket.Close();
+
+                Program.form.logClientAction("Conexion cerrada con el servidor");
 
                 //Erase key once the message has been sent
                 Cipher.eraseKey(key);

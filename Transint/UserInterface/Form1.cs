@@ -30,8 +30,11 @@ namespace Transint
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //TODO DESTROY KEYS
-            //serverThread.Abort();
+            //If server is on, turn off before exiting application
+            if (serverStatus)
+            {
+                server.stop();
+            }
         }
 
         private void button_generateKey_Click(object sender, EventArgs e)
@@ -44,6 +47,11 @@ namespace Transint
         {
             Cipher.eraseKey(generatedKey);
             textBox_generatedKey.Text = "";
+        }
+
+        private void button_copyKey_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(textBox_generatedKey.Text);
         }
 
         private void button_switchServer_Click(object sender, EventArgs e)
@@ -68,30 +76,36 @@ namespace Transint
             }
             else
             {
-                //Switch on
-                byte[] key = Cipher.stringToByte(textBox_serverKey.Text);
+                try
+                {
+                    //Switch on
+                    byte[] key = Cipher.stringToByte(textBox_serverKey.Text);
 
-                //Create and start server
-                server = new ServerSocket(int.Parse(textBox_servedPort.Text), key, (HMACAlgorithm)comboBox_serverAlgorithm.SelectedIndex);
-                serverThread = new Thread(server.start);
-                serverThread.Start();
+                    //Create and start server
+                    server = new ServerSocket(int.Parse(textBox_servedPort.Text), key, (HMACAlgorithm)comboBox_serverAlgorithm.SelectedIndex);
+                    serverThread = new Thread(server.start);
+                    serverThread.Start();
 
-                //Update server user interface
-                textBox_servedPort.Enabled = false;
-                comboBox_serverAlgorithm.Enabled = false;
-                textBox_serverStatus.Text = "Encendido";
-                button_switchServer.Text = "Apagar";
+                    //Update server user interface
+                    textBox_servedPort.Enabled = false;
+                    comboBox_serverAlgorithm.Enabled = false;
+                    textBox_serverStatus.Text = "Encendido";
+                    button_switchServer.Text = "Apagar";
 
-                //Hide and erase used key from user interface
-                textBox_serverKey.Enabled = false;
-                textBox_serverKey.UseSystemPasswordChar = true;
-                textBox_serverKey.Text = new string('*', textBox_serverKey.Text.Length);
-                Cipher.eraseKey(key);
+                    //Hide and erase used key from user interface
+                    textBox_serverKey.Enabled = false;
+                    textBox_serverKey.UseSystemPasswordChar = true;
+                    textBox_serverKey.Text = new string('*', textBox_serverKey.Text.Length);
+                    Cipher.eraseKey(key);
 
-                //Log activity
-                this.logServerAction("Servidor encendido");
+                    serverStatus = true;
+
+                    //Log activity
+                    this.logServerAction("Servidor encendido");
+                }
+                catch (Exception){}
+
             }
-            serverStatus = !serverStatus;
         }
 
         private void button_sendMessage_Click(object sender, EventArgs e)

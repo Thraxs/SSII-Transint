@@ -124,10 +124,14 @@ namespace Transint
         {
             byte[] result = new byte[input.Length / 2];
 
-            for (int i = 0; i < input.Length; i += 2)
+            try
             {
-                result[i / 2] = Convert.ToByte(input.Substring(i, 2), 16);
+                for (int i = 0; i < input.Length; i += 2)
+                {
+                    result[i / 2] = Convert.ToByte(input.Substring(i, 2), 16);
+                }
             }
+            catch (Exception) {}
 
             return result;
         }
