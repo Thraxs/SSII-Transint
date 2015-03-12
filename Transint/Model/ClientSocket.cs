@@ -16,8 +16,9 @@ namespace Transint
         private string data;
         private byte[] buffer;
         private byte[] key;
+        private string input;
 
-        public ClientSocket(string ip, int port, byte[] key, HMACAlgorithm algorithm)
+        public ClientSocket(string ip, int port, byte[] key, HMACAlgorithm algorithm, string input)
         {
             IPHostEntry ipHostInfo = Dns.GetHostEntry(ip);
             IPAddress address = null;
@@ -37,29 +38,33 @@ namespace Transint
 
             data = null;
             buffer = new Byte[1024];
-            this.key = key;
+            this.key = new byte[key.Length];
+            Array.Copy(key, this.key, key.Length);
             this.algorithm = algorithm;
+            this.input = input;
         }
 
-        public void sendData(string input)
+        public void sendData()
         {
             try
             {
                 socket.Connect(remoteServer);
 
+                Program.form.logClientAction("Conexion establecida con el servidor");
+
                 //Create the message with the HMAC and the contents
                 byte[] HMAC = Cipher.computeHMAC(key, input, algorithm);
-                string messageString = Encoding.Default.GetString(HMAC) + "</>" + input + "</>";
+                string messageString = Cipher.byteToString(HMAC) + "</>" + input + "</>";
                 byte[] message = Encoding.Default.GetBytes(messageString);
                 
                 socket.Send(message);
 
-                /*
+                Program.form.logClientAction("Mensaje enviado al servidor");
+
                 int bytesReceived = socket.Receive(buffer);
                 data = Encoding.ASCII.GetString(buffer, 0, bytesReceived);
-                */
-                //TODO handle response
-                //Console.WriteLine("Server response: " + data);
+
+                Program.form.logClientAction(data);
 
                 socket.Shutdown(SocketShutdown.Both);
                 socket.Close();

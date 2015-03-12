@@ -59,8 +59,6 @@ namespace Transint
             //Compare the received hash with the computed hash
             result = HMAC.SequenceEqual(messageHash);
 
-            Console.WriteLine("Verification result:" + result);
-
             return result;
         }
 
@@ -107,6 +105,31 @@ namespace Transint
             {
                 array[i] = 0;
             }
+        }
+
+        //Convert byte array to hex string
+        public static string byteToString(byte[] input)
+        {
+            StringBuilder stringbuilder = new StringBuilder();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                stringbuilder.Append(input[i].ToString("x2"));
+            }
+            return stringbuilder.ToString();
+        }
+
+        //Convert hex string to byte
+        public static byte[] stringToByte(string input)
+        {
+            byte[] result = new byte[input.Length / 2];
+
+            for (int i = 0; i < input.Length; i += 2)
+            {
+                result[i / 2] = Convert.ToByte(input.Substring(i, 2), 16);
+            }
+
+            return result;
         }
     }
 }
