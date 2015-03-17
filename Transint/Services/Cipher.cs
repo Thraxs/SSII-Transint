@@ -11,6 +11,8 @@ namespace Transint
 
     static class Cipher
     {
+        public static Random randomGenerator = new Random();
+
         //Compute the HMAC of the given message
         public static byte[] computeHMAC(byte[] key, string message, HMACAlgorithm algorithm)
         {
@@ -134,6 +136,12 @@ namespace Transint
             catch (Exception) {}
 
             return result;
+        }
+
+        //Generate 32-bit random number for nonce
+        public static string generateNonce()
+        {
+            return randomGenerator.Next(int.MaxValue).ToString();
         }
     }
 }

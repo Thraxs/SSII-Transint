@@ -61,7 +61,8 @@ namespace Transint
 
                 //Create the message with the HMAC and the contents
                 byte[] HMAC = Cipher.computeHMAC(key, input, algorithm);
-                string messageString = Cipher.byteToString(HMAC) + "</>" + input + "<//>";
+                string nonce = Cipher.generateNonce();
+                string messageString = Cipher.byteToString(HMAC) + "</>" + nonce + "<//>" + input + "<///>";
                 byte[] message = Encoding.Default.GetBytes(messageString);
                 
                 socket.Send(message);

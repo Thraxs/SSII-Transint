@@ -22,6 +22,7 @@ namespace Transint
         private Socket socket;
         private HMACAlgorithm algorithm;
         private byte[] key;
+        private Dictionary<int, DateTime> nonceCache;
 
         public ServerSocket(int port, byte[] key, HMACAlgorithm algorithm)
         {
@@ -38,12 +39,12 @@ namespace Transint
             }
 
             localServer = new IPEndPoint(address, port);
-
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             this.key = new byte[key.Length];
             Array.Copy(key, this.key, key.Length);
             this.algorithm = algorithm;
+            this.nonceCache = new Dictionary<int, DateTime>();
         }
 
         public static ManualResetEvent resetEvent = new ManualResetEvent(false);
@@ -113,21 +114,43 @@ namespace Transint
                 state.input.Append(Encoding.Default.GetString(state.buffer, 0, bytesRec));
 
                 data = state.input.ToString();
-                if (data.IndexOf("<//>") > -1){
+                if (data.IndexOf("<///>") > -1){
                     //Process input
 
                     //Separate HMAC and message
                     int HMACSeparator = data.IndexOf("</>");
-                    int messageSeparator = data.LastIndexOf("<//>");
+                    int nonceSeparator = data.IndexOf("<//>");
+                    int messageSeparator = data.LastIndexOf("<///>");
                     byte[] receivedHMAC = Cipher.stringToByte(data.Substring(0, HMACSeparator));
-                    string message = data.Substring(HMACSeparator + 3, (messageSeparator - HMACSeparator) - 3);
+                    int nonce = int.Parse(data.Substring(HMACSeparator + 3, (nonceSeparator - HMACSeparator) - 3));
+                    string message = data.Substring(nonceSeparator + 4, (messageSeparator - nonceSeparator) - 4);
+
+                    bool nonceError = false;
+                    IPEndPoint client = handler.RemoteEndPoint as IPEndPoint;
+                    if (nonceCache.ContainsKey(nonce))
+                    {
+                        //Non-unique nonce, message is to be descarded
+                        nonceError = true;
+                    }
+                    else
+                    {
+                        nonceCache.Add(nonce, DateTime.Now);
+                    }
 
                     bool status = Cipher.verifyHMAC(key, message, receivedHMAC, algorithm);
                     string response;
                     if (status)
                     {
-                        Program.form.logServerAction("Mensaje integro recibido desde " + IPAddress.Parse(((IPEndPoint)handler.RemoteEndPoint).Address.ToString()));
-                        response = "Mensaje integro recibido por el servidor";
+                        if (nonceError)
+                        {
+                            Program.form.logServerAction("Mensaje repetido recibido desde " + IPAddress.Parse(((IPEndPoint)handler.RemoteEndPoint).Address.ToString()));
+                            response = "Mensaje repetido recibido por el servidor, descartado";
+                        }
+                        else
+                        {
+                            Program.form.logServerAction("Mensaje integro recibido desde " + IPAddress.Parse(((IPEndPoint)handler.RemoteEndPoint).Address.ToString()));
+                            response = "Mensaje integro recibido por el servidor";
+                        }
                     }
                     else
                     {
